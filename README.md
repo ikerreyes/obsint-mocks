@@ -14,6 +14,8 @@ As of 2022/11/29, it has only been used for external data pipeline.
 If you want to run the server locally:
 
 ```shell
+python -m venv venv
+source venv/bin/activate
 pip install -r server/requirements.txt
 uvicorn server.main:app --reload --log-config=server/logging.yaml
 ```
@@ -27,6 +29,11 @@ Exposed port is 8000 by default.
 
    ```shell
    podman build . -t mock-ams:latest
+   ```
+3. run the image
+
+   ```shell
+   podman run --publish 8000:8000 mock-ams
    ```
 
 ## Usage
