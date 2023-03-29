@@ -1,0 +1,40 @@
+organizations:
+  "11789772":
+    clusters:
+      - uuid: 5d5892d3-1f74-4ccf-91af-548dfc9767aa
+        name: Cluster With Issues
+      - uuid: ee7d2bf4-8933-4a3a-8634-3328fe806e08
+        name: No Issues Cluster
+      - uuid: 37556893-a47d-4b14-8e8b-e0f741f7df4f
+        name: No Rules Cluster
+      - uuid: 576968e7-b50e-4723-8952-81b0477b6f4f
+        name: Test disable recommendation
+      - uuid: 7954603b-fc5e-4ef5-a439-e015245baef2
+        name: Managed cluster
+        managed: true
+  "3340851":
+    clusters:
+      - uuid: 8f7f87e7-cfda-4b55-8517-8d7a089b92f9
+        name: Cluster With Issues
+      - uuid: 0bd797c7-8040-4493-88e9-db58b80954de
+        name: No Issues Cluster
+      - uuid: 49fb2f70-a307-40a3-93ba-63916575ab4b
+        name: No Rules Cluster
+      - uuid: f0c538d4-c4c0-4023-a70e-62ff424adae4
+        name: Test disable recommendation
+      - uuid: 31a13183-4b7e-4dbc-b82b-da2f38ebad81
+        name: Managed cluster
+        managed: true
+  "5376376":
+    clusters:
+      - uuid: 0d6dea79-fbaf-4a04-87a3-18d48494e9cb
+        name: Cluster With Issues
+      - uuid: 4e550916-1d7b-4434-afec-6125088566d3
+        name: No Issues Cluster
+      - uuid: df5366a1-d6d4-4556-82a6-6394428232a3
+        name: No Rules Cluster
+      - uuid: ec9c0dce-bc5d-4a93-a4cd-6fa1ed2812c5
+        name: Test disable recommendation
+      - uuid: db1af8c8-6d69-40ae-a4f9-5fcb81499700
+        name: Managed cluster
+        managed: true

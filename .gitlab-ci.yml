@@ -1,0 +1,32 @@
+
+include:
+  - project: 'ccx/ccx-gitlab-includes'
+    file: '/ccx-lib.yml'
+
+
+default:
+  image: registry.access.redhat.com/ubi9/python-39
+  tags:
+    - shared
+
+stages:
+  - prepare
+  - test
+  - release
+
+linting:
+  image: registry.access.redhat.com/ubi9/python-39
+  extends:
+    - .pre-commit:lint
+  stage: prepare
+  before_script:
+    - pip install pre-commit
+
+
+pre-commit-autoupdate-check:
+  image: registry.access.redhat.com/ubi9/python-39
+  extends:
+    - .pre-commit:autoupdate-check
+  stage: prepare
+  before_script:
+    - pip install pre-commit
