@@ -72,10 +72,13 @@ as it should be aligned with the data we expect in the tests.
 
 ## Token
 
-Accessing AMS through the SDK makes some checks.
+This section is for external services willing to use this mock server.
+
+Accessing AMS through the SDK provided by AMS maintainers
+makes some checks.
 A valid token is needed even if the mock server does
 not validate it.
-Thus `INSIGHTS_RESULTS_SMART_PROXY__AMSCLIENT__TOKEN` variable
+For example `INSIGHTS_RESULTS_SMART_PROXY__AMSCLIENT__TOKEN` variable
 is defined for smart-proxy. If a new token is needed,
 you can find the code to generate it in the `token` folder.
 Execute it with:
