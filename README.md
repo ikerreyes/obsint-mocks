@@ -1,5 +1,6 @@
 # mock-ams
 
+
 `mock-ams` is aimed to act as a mock server to run test using
 external data pipeline and other services relying on AMS.
 
