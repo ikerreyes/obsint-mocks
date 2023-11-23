@@ -72,7 +72,7 @@ async def subscriptions(
             ]
         # TODO: what if cluster_match with 1 org and without org
         if cluster_match:
-            logger.info("cluster match", cluster_match.group(1))
+            logger.info("cluster match %s", cluster_match.group(1))
             clusters = [c for c in clusters if c["uuid"] == cluster_match.group(1)]
     return templates.TemplateResponse(
         "accounts_mgmt/v1/subscriptions.tpl",
