@@ -22,6 +22,8 @@ organizations:
         name: No Rules Cluster
       - uuid: f0c538d4-c4c0-4023-a70e-62ff424adae4
         name: Test disable recommendation
+      - uuid: b809e5ba-e9b8-4ba1-885c-54b8ecf02ae6
+        name: CCX test cluster for DVO recommendations
       - uuid: 31a13183-4b7e-4dbc-b82b-da2f38ebad81
         name: Managed cluster
         managed: true
@@ -35,6 +37,8 @@ organizations:
         name: No Rules Cluster
       - uuid: ec9c0dce-bc5d-4a93-a4cd-6fa1ed2812c5
         name: Test disable recommendation
+      - uuid: ff3bde89-3228-47ef-afd9-6d5aaf822cf1
+        name: CCX test cluster for DVO recommendations
       - uuid: db1af8c8-6d69-40ae-a4f9-5fcb81499700
         name: Managed cluster
         managed: true
