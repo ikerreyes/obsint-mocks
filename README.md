@@ -8,6 +8,9 @@ It is a minimal server, not meant for production but for testing,
 that tries to have as minimal code as possible to be able to respond
 to the queries done by CCX services to AMS.
 
+Additionaly, it also includes endpoints mimicking OCM Service Log
+functionality (also used for testing).
+
 As of 2022/11/29, it has only been used for external data pipeline.
 
 ## Local development
@@ -41,7 +44,7 @@ Exposed port is 8000 by default.
 
 The main usage for this service is as a mock replaced
 for compose files of CCX services relying on AMS
-(e.g. smart-proxy).
+(e.g. smart-proxy) or OCM Service Log (notification service).
 
 However, if you want to check its behavior
 you can deploy the server and run queries directly using
@@ -51,8 +54,11 @@ you can deploy the server and run queries directly using
 curl http://localhost:8000/api/accounts_mgmt/v1/organizations
 ```
 
-Currently, only 2 endpoints have been implemented
-(`/api/accounts_mgmt/v1/subscriptions` and `/api/accounts_mgmt/v1/organizations`).
+Currently, 4 endpoints have been implemented:
+- `[GET] /api/accounts_mgmt/v1/subscriptions`
+- `[GET] /api/accounts_mgmt/v1/organizations`
+- `[GET] /api/service_logs/v1/clusters/cluster_logs`
+- `[POST] /api/service_logs/v1/cluster_logs/`
 See `server/main.py` for more details.
 
 If you want to add new endpoints you can explicitly implement them,

@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import random
@@ -18,6 +19,7 @@ from fastapi.templating import Jinja2Templates
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+app.state.service_log = {}
 
 FOLDER = Path(path.dirname(path.realpath(__file__)))
 DATA_FOLDER = FOLDER / "../data"
@@ -102,6 +104,35 @@ async def organizations(request: Request, search: str = Query(default="")):
         {"request": request, "organizations": orgs},
         media_type="application/json",
     )
+
+
+@app.get("/api/service_logs/v1/clusters/cluster_logs", response_class=JSONResponse)
+async def service_log_events(request: Request):
+    logger.info("received request for service log events")
+    params = request.query_params
+    logs = []
+    if "cluster_id" not in params:
+        logs = list(app.state.service_log.values())
+    elif params["cluster_id"] not in app.state.service_log:
+        raise HTTPException(status_code=404, detail="Unfound response")
+    else:
+        logs = [app.state.service_log[params["cluster_id"]]]
+
+    response = {"kind": "ClusterLogList", "items": logs}
+    return json.dumps(response)
+
+
+@app.post("/api/service_logs/v1/cluster_logs/", status_code=201)
+async def service_log_create_event(request: Request):
+    logger.info("got new service log event")
+    body = await request.body()
+    try:
+        new_event = json.loads(body.decode("utf8"))
+        logger.info("event successfully decoded")
+        app.state.service_log[new_event["cluster_uuid"]] = new_event
+        return {"Event received successfully"}
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=404, detail="Message is not valid JSON")
 
 
 @app.api_route("/{path_name:path}", methods=["GET"], response_class=FileResponse)
