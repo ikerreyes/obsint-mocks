@@ -11,3 +11,11 @@ linting:
 pre-commit-autoupdate-check:
   extends:
     - .pre-commit:autoupdate-check
+
+
+pre-commit-autoupdate:
+  extends: .pre-commit:autoupdate
+  rules:
+  - if: $CI_PIPELINE_SOURCE == "schedule"
+  variables:
+    MAINTAINERS: "@jipapous"
