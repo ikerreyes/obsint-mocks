@@ -12,6 +12,8 @@ organizations:
       - uuid: 7954603b-fc5e-4ef5-a439-e015245baef2
         name: Managed cluster
         managed: true
+      - uuid: da46cc05-29d8-4334-8690-93ca1e56226d
+        name: CCX test cluster for ServiceLog and osd_customer tag
   "3340851":
     clusters:
       - uuid: 8f7f87e7-cfda-4b55-8517-8d7a089b92f9
@@ -27,6 +29,8 @@ organizations:
       - uuid: 31a13183-4b7e-4dbc-b82b-da2f38ebad81
         name: Managed cluster
         managed: true
+      - uuid: 3f86009c-9250-4dbb-aa82-9d1fae8b2b6d
+        name: CCX test cluster for ServiceLog and osd_customer tag
   "5376376":
     clusters:
       - uuid: 0d6dea79-fbaf-4a04-87a3-18d48494e9cb
@@ -42,3 +46,5 @@ organizations:
       - uuid: db1af8c8-6d69-40ae-a4f9-5fcb81499700
         name: Managed cluster
         managed: true
+      - uuid: b1187d0f-b7e9-4ca3-9da3-3faef75db379
+        name: CCX test cluster for ServiceLog and osd_customer tag
