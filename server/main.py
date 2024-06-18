@@ -118,8 +118,8 @@ async def service_log_events(request: Request):
     else:
         logs = [app.state.service_log[params["cluster_id"]]]
 
-    response = {"kind": "ClusterLogList", "items": logs}
-    return json.dumps(response)
+    response = {"kind": "ClusterLogList", "items": logs, "size": len(logs)}
+    return response
 
 
 @app.post("/api/service_logs/v1/cluster_logs/", status_code=201)
