@@ -122,7 +122,7 @@ async def service_log_events(request: Request):
     return response
 
 
-@app.post("/api/service_logs/v1/cluster_logs/", status_code=201)
+@app.post("/api/service_logs/v1/cluster_logs", status_code=201)
 async def service_log_create_event(request: Request):
     logger.info("got new service log event")
     body = await request.body()
