@@ -118,10 +118,10 @@ async def service_log_events(request: Request):
     else:
         raise HTTPException(status_code=400, detail="Cluster ID missing")
 
-    if cluster_id not in app.state.service_log:
-        raise HTTPException(status_code=404, detail="Unfound response")
-
-    logs = [app.state.service_log[cluster_id]]
+    logs = []
+    cluster_event = app.state.service_log.get(cluster_id, None)
+    if cluster_event:
+        logs = [cluster_event]
     response = {"kind": "ClusterLogList", "items": logs, "size": len(logs)}
     return response
 
