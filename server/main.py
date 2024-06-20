@@ -111,12 +111,17 @@ async def service_log_events(request: Request):
     logger.info("received request for service log events")
     params = request.query_params
 
-    if "cluster_id" not in params:
+    if "cluster_id" in params:
+        cluster_id = params["cluster_id"]
+    elif "cluster_uuid" in params:
+        cluster_id = params["cluster_uuid"]
+    else:
         raise HTTPException(status_code=400, detail="Cluster ID missing")
-    elif params["cluster_id"] not in app.state.service_log:
+
+    if cluster_id not in app.state.service_log:
         raise HTTPException(status_code=404, detail="Unfound response")
 
-    logs = [app.state.service_log[params["cluster_id"]]]
+    logs = [app.state.service_log[cluster_id]]
     response = {"kind": "ClusterLogList", "items": logs, "size": len(logs)}
     return response
 
