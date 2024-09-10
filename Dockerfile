@@ -1,6 +1,7 @@
 FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
-RUN microdnf install --nodocs --noplugins -y python3.11 python3.11-pip
+RUN microdnf install --nodocs --noplugins -y python3.11 python3.11-pip &&\
+    microdnf remove -y python3.11-setuptools || true
 
 WORKDIR /code
 COPY ./server /code

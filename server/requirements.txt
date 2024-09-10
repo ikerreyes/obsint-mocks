@@ -3,3 +3,4 @@ jinja2
 pydantic
 pyyaml
 uvicorn
+setuptools>=70.0.0
