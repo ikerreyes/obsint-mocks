@@ -7,7 +7,7 @@ repos:
         args:
           - --application-directories=.:server
   - repo: https://github.com/psf/black
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - id: black
         args: [--safe, --quiet, --line-length, "100"]
@@ -22,7 +22,7 @@ repos:
           - --max-line-length=100
           - --ignore=W503,E203
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
         language_version: python3
