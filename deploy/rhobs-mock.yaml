@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: rhobs-mock
+objects:
+  - apiVersion: cloud.redhat.com/v1alpha1
+    kind: ClowdApp
+    metadata:
+      name: rhobs-mock
+    spec:
+      envName: ${ENV_NAME}
+      deployments:
+        - name: service
+          minReplicas: 1
+          webServices:
+            public:
+              enabled: false
+            private:
+              enabled: true
+            metrics:
+              enabled: false
+          podSpec:
+            image: ${IMAGE}:${IMAGE_TAG}
+            command: ["uvicorn", "rhobs:app", "--host", "0.0.0.0", "--port", "8000", "--log-config=logging.yaml"]
+            livenessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /
+                # Use the same port as web services
+                port: 8000
+                scheme: HTTP
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 60
+            readinessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /
+                port: 8000
+                scheme: HTTP
+              periodSeconds: 30
+              successThreshold: 1
+              timeoutSeconds: 60
+  - kind: Service
+    apiVersion: v1
+    metadata:
+      name: rhobs-mock-svc
+      labels:
+        app: rhobs-mock
+    spec:
+      ports:
+        - name: web
+          port: 8000
+          protocol: TCP
+          targetPort: 8000
+      selector:
+        app: rhobs-mock
+      type: ClusterIP
+parameters:
+- description: Image name
+  name: IMAGE
+  value: quay.io/cloudservices/ccx-mock-ams
+- description: Image tag
+  name: IMAGE_TAG
+  required: true
+- description: ClowdEnv Name
+  name: ENV_NAME
+  required: true
