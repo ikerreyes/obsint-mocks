@@ -51,7 +51,7 @@ def load_responses_configuration_from_file(responses_file):
 
 
 def add_console_url(response, cluster_id, console_url):
-    metric = {"metric_name": "console_url", "id": cluster_id, "url": console_url}
+    metric = {"__name__": "console_url", "_id": cluster_id, "url": console_url}
 
     response["data"]["result"].append({"metric": metric, "value": default_metric_value})
     return response
@@ -59,8 +59,8 @@ def add_console_url(response, cluster_id, console_url):
 
 def add_alert(response, cluster_id, i):
     alert = {
-        "metric_name": "alerts",
-        "id": cluster_id,
+        "__name__": "alerts",
+        "_id": cluster_id,
         "alertname": f"ClusterNotUpgradeable-{i}",
         "alertstate": "firing",
         "condition": "Upgradeable",
@@ -79,8 +79,8 @@ def add_alert(response, cluster_id, i):
 
 def add_foc(response, cluster_id, i):
     foc = {
-        "metric_name": "cluster_operator_conditions",
-        "id": cluster_id,
+        "__name__": "cluster_operator_conditions",
+        "_id": cluster_id,
         "condition": "Available",
         "endpoint": "metrics",
         "instance": "1.2.3.4:9099",
