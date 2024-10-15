@@ -4,9 +4,8 @@ default_metric_value = [1674659551.037, "1"]
 empty_response = {"status": "success", "data": {"resultType": "vector", "result": []}}
 
 
-def generate_mock_responses(responses_file="rhobs-responses.yaml"):
+def generate_mock_responses(config):
     """Populates the mock_responses dictionary with generated data."""
-    config = load_responses_configuration_from_file(responses_file)
     mock_responses = {}
 
     for cluster_id, alerts_and_focs in config["mock_responses"].items():
@@ -28,7 +27,7 @@ def generate_mock_responses(responses_file="rhobs-responses.yaml"):
     return mock_responses
 
 
-def load_responses_configuration_from_file(responses_file):
+def load_responses_configuration(responses_file="rhobs-responses.yaml"):
     """Load the responses configuration from a YAML file. The format is:
 
     mock-responses:

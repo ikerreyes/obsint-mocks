@@ -1,12 +1,16 @@
 import logging
 import re
+from typing import Dict
 
 from fastapi import FastAPI
 from fastapi import Query
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 from generate_rhobs_data import empty_response
 from generate_rhobs_data import generate_mock_responses
+from generate_rhobs_data import load_responses_configuration
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
@@ -64,7 +68,7 @@ class Server:
         return self.remove_duplicate(re.findall(pattern, query))
 
 
-server = Server(generate_mock_responses())
+server = Server(generate_mock_responses(load_responses_configuration()))
 
 
 @app.get("/")
@@ -76,3 +80,18 @@ async def root():
 async def get_instant_query(tenant: str, query: str = Query(...)):
     """Mocks the /api/metrics/v1/{tenant}/api/v1/query endpoint"""
     return server.get_instant_query(tenant, query)
+
+
+class ClusterResponse(BaseModel):
+    focs: int
+    alerts: int
+
+
+class ClusterResponses(BaseModel):
+    mock_responses: Dict[str, ClusterResponse]
+
+
+@app.put("/rhobs_responses", status_code=204)
+async def change_rhobs_responses(responses: ClusterResponses):
+    logger.info("Changing mocked responses for RHOBS endpoint")
+    server.mock_responses = generate_mock_responses(jsonable_encoder(responses))
