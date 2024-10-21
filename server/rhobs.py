@@ -34,7 +34,8 @@ class Server:
         response = empty_response
         logger.info("got a request for %s clusters", cluster_ids)
         for cluster_id in cluster_ids:
-            response["data"]["result"].extend(self.mock_responses[cluster_id]["data"]["result"])
+            if cluster_id in self.mock_responses:
+                response["data"]["result"].extend(self.mock_responses[cluster_id]["data"]["result"])
         return JSONResponse(content=response, status_code=200)
 
     def get_instant_query(self, tenant, query: str):
