@@ -48,3 +48,7 @@ organizations:
         managed: true
       - uuid: b1187d0f-b7e9-4ca3-9da3-3faef75db379
         name: CCX test cluster for ServiceLog and osd_customer tag
+  "12345":
+    clusters:
+      - uuid: 181862b9-c53b-4ea9-ae22-ac4415e2cf21
+        name: Runtimes Demo Cluster
