@@ -1,5 +1,3 @@
-import yaml
-
 default_metric_value = [1674659551.037, "1"]
 empty_response = {"status": "success", "data": {"resultType": "vector", "result": []}}
 
@@ -25,28 +23,6 @@ def generate_mock_responses(config):
         for i in range(alerts_and_focs["focs"]):
             mock_responses[cluster_id] = add_foc(mock_responses[cluster_id], cluster_id, i)
     return mock_responses
-
-
-def load_responses_configuration(responses_file="rhobs-responses.yaml"):
-    """Load the responses configuration from a YAML file. The format is:
-
-    mock-responses:
-        3a87e224-c878-4f54-91cf-3f1900609207:
-            alerts: 2
-            focs: 3
-        a994b868-4878-477a-8f8d-dbddb3130ed3:
-            alerts: 1
-            focs: 0
-    """
-    with open(responses_file, encoding="utf-8") as file:
-        config_data = yaml.safe_load(file)
-
-    return {
-        "mock_responses": {
-            k: {"alerts": v["alerts"], "focs": v["focs"]}
-            for k, v in config_data["mock-responses"].items()
-        }
-    }
 
 
 def add_console_url(response, cluster_id, console_url):

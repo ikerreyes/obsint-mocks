@@ -10,7 +10,6 @@ from pydantic import BaseModel
 
 from generate_rhobs_data import empty_response
 from generate_rhobs_data import generate_mock_responses
-from generate_rhobs_data import load_responses_configuration
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
@@ -19,8 +18,8 @@ app = FastAPI()
 class Server:
     """The server handles the response retrieval from the mocked responses."""
 
-    def __init__(self, mock_responses):
-        self.mock_responses = mock_responses
+    def __init__(self):
+        self.mock_responses = {}
 
     def mock_response_single_cluster(self, cluster_id):
         """Get the response from the mocked responses."""
@@ -69,7 +68,7 @@ class Server:
         return self.remove_duplicate(re.findall(pattern, query))
 
 
-server = Server(generate_mock_responses(load_responses_configuration()))
+server = Server()
 
 
 @app.get("/")
