@@ -58,7 +58,7 @@ objects:
 parameters:
 - description: Image name
   name: IMAGE
-  value: quay.io/cloudservices/ccx-mock-ams
+  value: quay.io/redhat-services-prod/obsint-processing-tenant/obsint-mocks/obsint-mocks
 - description: Image tag
   name: IMAGE_TAG
   required: true
