@@ -13,9 +13,11 @@ from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import Query
 from fastapi import Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import FileResponse
 from fastapi.responses import JSONResponse
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
@@ -32,7 +34,7 @@ templates.env.globals["random_string"] = lambda: "".join(
 )
 
 with open(FOLDER / "conf.yaml") as fd:
-    CONF = yaml.safe_load(fd)
+    app.conf = yaml.safe_load(fd)
 
 
 @app.get("/")
@@ -66,11 +68,13 @@ async def subscriptions(
         cluster_match = external_cluster_id_query.search(search)
         if org_match:
             org = org_match.group(1)
-            clusters = CONF["organizations"].get(org, {}).get("clusters", [])
+            clusters = app.conf["organizations"].get(org, {}).get("clusters", [])
         else:
             logger.info("no org provided, getting all clusters")
             clusters = [
-                c for org in CONF["organizations"] for c in CONF["organizations"][org]["clusters"]
+                c
+                for org in app.conf["organizations"]
+                for c in app.conf["organizations"][org]["clusters"]
             ]
         # TODO: what if cluster_match with 1 org and without org
         if cluster_match:
@@ -98,7 +102,7 @@ async def organizations(request: Request, search: str = Query(default="")):
     if match:
         orgs = [match.group(1)]
     else:
-        orgs = list(CONF["organizations"].keys())
+        orgs = list(app.conf["organizations"].keys())
     return templates.TemplateResponse(
         "accounts_mgmt/v1/organizations.tpl",
         {"request": request, "organizations": orgs},
@@ -149,3 +153,24 @@ async def catch_all(path_name: str):
         return file
     else:
         raise HTTPException(status_code=404, detail="Unfound response")
+
+
+class Cluster(BaseModel):
+    uuid: str
+    name: str
+    managed: Optional[bool] = False
+
+
+class ClusterList(BaseModel):
+    clusters: list[Cluster]
+
+
+class AMSMockConfiguration(BaseModel):
+    organizations: dict[int, ClusterList]
+
+
+@app.put("/ams_responses", status_code=204)
+async def change_ams_responses(configuration: AMSMockConfiguration):
+    """Configure the responses from AMS mock"""
+    logger.info("Changing mocked responses for AMS")
+    app.conf = jsonable_encoder(configuration)
