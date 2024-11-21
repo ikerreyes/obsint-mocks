@@ -8,7 +8,6 @@ from os import path
 from pathlib import Path
 from typing import Optional
 
-import yaml
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import Query
@@ -33,8 +32,7 @@ templates.env.globals["random_string"] = lambda: "".join(
     random.choice(string.ascii_letters + string.digits) for i in range(16)
 )
 
-with open(FOLDER / "conf.yaml") as fd:
-    app.conf = yaml.safe_load(fd)
+app.conf = {"organizations": {}}
 
 
 @app.get("/")
