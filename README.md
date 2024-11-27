@@ -87,17 +87,19 @@ configuration. Data are in the following format:
 ```
 {
     "organizations": {
-        "123456": [
-            {
-                "uuid": "c1e32880-417a-4226-be81-4d891cdf965e"
-                "name": "Example cluster 1",
-                "managed": "true"
-            },
-            {
-                "uuid": "c2b778e0-5ac8-4cf4-8269-c6eaf0519fe4",
-                "name": "Example cluster 2"
-            }
-        ]
+        "123456": {
+            "clusters": [
+                {
+                    "uuid": "c1e32880-417a-4226-be81-4d891cdf965e"
+                    "name": "Example cluster 1",
+                    "managed": "true"
+                },
+                {
+                    "uuid": "c2b778e0-5ac8-4cf4-8269-c6eaf0519fe4",
+                    "name": "Example cluster 2"
+                }
+            ]
+        }
     }
 }
 ```
