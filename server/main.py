@@ -155,7 +155,7 @@ async def catch_all(path_name: str):
 
 class Cluster(BaseModel):
     uuid: str
-    name: str
+    name: Optional[str]
     managed: Optional[bool] = False
 
 
