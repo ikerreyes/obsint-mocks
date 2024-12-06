@@ -155,7 +155,7 @@ async def catch_all(path_name: str):
 
 class Cluster(BaseModel):
     uuid: str
-    name: Optional[str]
+    name: Optional[str] = None
     managed: Optional[bool] = False
 
 
@@ -171,4 +171,4 @@ class AMSMockConfiguration(BaseModel):
 async def change_ams_responses(configuration: AMSMockConfiguration):
     """Configure the responses from AMS mock"""
     logger.info("Changing mocked responses for AMS")
-    app.conf = jsonable_encoder(configuration)
+    app.conf = jsonable_encoder(configuration, exclude_unset=True)
