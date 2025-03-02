@@ -5,7 +5,7 @@ go 1.21
 toolchain go1.24.0
 
 require (
-	github.com/golang-jwt/jwt/v4 v4.5.1
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/openshift-online/ocm-sdk-go v0.1.460
 )
 
@@ -13,6 +13,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/evanphx/json-patch/v5 v5.6.0 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/itchyny/gojq v0.12.7 // indirect

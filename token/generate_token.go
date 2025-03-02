@@ -5,16 +5,14 @@ tests
 
 package main
 
-
 import (
-    "crypto/rsa"
-    "fmt"
-    "time"
+	"crypto/rsa"
+	"fmt"
+	"time"
 
-    jwt "github.com/golang-jwt/jwt/v4"
-    ocmtesting "github.com/openshift-online/ocm-sdk-go/testing"
+	jwt "github.com/golang-jwt/jwt/v5"
+	ocmtesting "github.com/openshift-online/ocm-sdk-go/testing"
 )
-
 
 // Public key in PEM format:
 const jwtPublicKeyPEM = `
@@ -113,10 +111,8 @@ func MakeTokenString(typ string, life time.Duration) string {
 	return token.Raw
 }
 
-
-
 func main() {
-    var err error
+	var err error
 
 	jwtPublicKey, err = jwt.ParseRSAPublicKeyFromPEM([]byte(jwtPublicKeyPEM))
 	if err != nil {
