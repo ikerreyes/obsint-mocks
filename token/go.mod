@@ -6,7 +6,7 @@ toolchain go1.24.5
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.3
-	github.com/openshift-online/ocm-sdk-go v0.1.469
+	github.com/openshift-online/ocm-sdk-go v0.1.471
 )
 
 require (
