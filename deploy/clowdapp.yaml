@@ -40,6 +40,13 @@ objects:
               periodSeconds: 30
               successThreshold: 1
               timeoutSeconds: 60
+            resources:
+              limits:
+                cpu: ${CPU_LIMIT}
+                memory: ${MEMORY_LIMIT}
+              requests:
+                cpu: ${CPU_REQUEST}
+                memory: ${MEMORY_REQUEST}
   - kind: Service
     apiVersion: v1
     metadata:
@@ -65,3 +72,11 @@ parameters:
 - description: ClowdEnv Name
   name: ENV_NAME
   required: true
+- name: CPU_REQUEST
+  value: '10m'
+- name: CPU_LIMIT
+  value: '50m'
+- name: MEMORY_REQUEST
+  value: '250Mi'
+- name: MEMORY_LIMIT
+  value: '400Mi'
