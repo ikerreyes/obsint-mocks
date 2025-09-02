@@ -14,11 +14,9 @@ objects:
           minReplicas: 1
           webServices:
             public:
-              enabled: false
-            private:
               enabled: true
-            metrics:
-              enabled: false
+              apiPaths:
+                - /api/mock-ams/
           podSpec:
             image: ${IMAGE}:${IMAGE_TAG}
             livenessProbe:
