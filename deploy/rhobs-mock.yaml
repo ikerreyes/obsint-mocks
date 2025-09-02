@@ -14,11 +14,9 @@ objects:
           minReplicas: 1
           webServices:
             public:
-              enabled: false
-            private:
               enabled: true
-            metrics:
-              enabled: false
+              apiPaths:
+                - /api/mock-rhobs/
           podSpec:
             image: ${IMAGE}:${IMAGE_TAG}
             command: ["uvicorn", "rhobs:app", "--host", "0.0.0.0", "--port", "8000", "--log-config=logging.yaml"]
