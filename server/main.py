@@ -8,6 +8,7 @@ from os import path
 from pathlib import Path
 from typing import Optional
 
+from fastapi import APIRouter
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import Query
@@ -20,6 +21,7 @@ from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+router = APIRouter()
 app.state.service_log = {}
 
 FOLDER = Path(path.dirname(path.realpath(__file__)))
@@ -35,7 +37,7 @@ templates.env.globals["random_string"] = lambda: "".join(
 app.conf = {"organizations": {}}
 
 
-@app.get("/")
+@router.get("/")
 async def root():
     return {"message": "Hello World"}
 
@@ -44,7 +46,7 @@ org_id_query = re.compile(r"organization_id\s?(?:=|is)\s?['\"]?(\w*)")
 external_cluster_id_query = re.compile(r"external_cluster_id\s?(?:=|is)\s?['\"]?([\w-]*)")
 
 
-@app.get("/api/accounts_mgmt/v1/subscriptions", response_class=JSONResponse)
+@router.get("/api/accounts_mgmt/v1/subscriptions", response_class=JSONResponse)
 async def subscriptions(
     request: Request, page: Optional[int] = None, search: str = Query(default="")
 ):
@@ -88,7 +90,7 @@ async def subscriptions(
 org_external_id_query = re.compile(r"external_id\s?=\s?(\w*)")
 
 
-@app.get("/api/accounts_mgmt/v1/organizations", response_class=JSONResponse)
+@router.get("/api/accounts_mgmt/v1/organizations", response_class=JSONResponse)
 async def organizations(request: Request, search: str = Query(default="")):
     """
     Cases:
@@ -108,7 +110,7 @@ async def organizations(request: Request, search: str = Query(default="")):
     )
 
 
-@app.get("/api/service_logs/v1/clusters/cluster_logs", response_class=JSONResponse)
+@router.get("/api/service_logs/v1/clusters/cluster_logs", response_class=JSONResponse)
 async def service_log_events(request: Request):
     logger.info("received request for service log events")
     params = request.query_params
@@ -128,7 +130,7 @@ async def service_log_events(request: Request):
     return response
 
 
-@app.post("/api/service_logs/v1/cluster_logs", status_code=201)
+@router.post("/api/service_logs/v1/cluster_logs", status_code=201)
 async def service_log_create_event(request: Request):
     logger.info("got new service log event")
     body = await request.body()
@@ -141,7 +143,7 @@ async def service_log_create_event(request: Request):
         raise HTTPException(status_code=404, detail="Message is not valid JSON")
 
 
-@app.api_route("/{path_name:path}", methods=["GET"], response_class=FileResponse)
+@router.api_route("/{path_name:path}", methods=["GET"], response_class=FileResponse)
 async def catch_all(path_name: str):
     """Return the JSON associated with the request"""
     # TODO harden this for path traversal
@@ -167,8 +169,19 @@ class AMSMockConfiguration(BaseModel):
     organizations: dict[int, ClusterList]
 
 
-@app.put("/ams_responses", status_code=204)
+@router.put("/ams_responses", status_code=204)
 async def change_ams_responses(configuration: AMSMockConfiguration):
     """Configure the responses from AMS mock"""
     logger.info("Changing mocked responses for AMS")
     app.conf = jsonable_encoder(configuration, exclude_unset=True)
+
+
+# Include the same endpoints at the "root"
+# and with a prefix. This is useful for exposing
+# internal in the cluster and through and OpenShift route
+# managed by Clowder with minimal changes in the configs
+# See https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-in-another
+route_prefix = os.getenv("SERVER_ROUTE_PREFIX")
+if route_prefix is not None:
+    app.include_router(router, prefix=route_prefix)
+app.include_router(router, prefix="")

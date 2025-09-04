@@ -16,9 +16,13 @@ objects:
             public:
               enabled: true
               apiPaths:
-                - /api/mock-ams/
+                - "${ROUTE_PREFIX}/"
           podSpec:
             image: ${IMAGE}:${IMAGE_TAG}
+            command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-config=logging.yaml"]
+            env:
+              - name: SERVER_ROUTE_PREFIX
+                value: "${ROUTE_PREFIX}"
             livenessProbe:
               failureThreshold: 3
               httpGet:
@@ -78,3 +82,8 @@ parameters:
   value: '250Mi'
 - name: MEMORY_LIMIT
   value: '400Mi'
+- description: Path in the route to server requests from
+  name: ROUTE_PREFIX
+  required: true
+  value: "/api/mock-ams"
+  regex: '^\/api\/[a-zA-Z0-9-]+'  # Same regex as clowder without the final /

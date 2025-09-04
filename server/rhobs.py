@@ -1,7 +1,9 @@
 import logging
+import os
 import re
 from typing import Dict
 
+from fastapi import APIRouter
 from fastapi import FastAPI
 from fastapi import Query
 from fastapi.encoders import jsonable_encoder
@@ -13,6 +15,7 @@ from generate_rhobs_data import generate_mock_responses
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+router = APIRouter()
 
 
 class Server:
@@ -71,12 +74,12 @@ class Server:
 server = Server()
 
 
-@app.get("/")
+@router.get("/")
 async def root():
     return {"message": "Hello World"}
 
 
-@app.get("/api/metrics/v1/{tenant}/api/v1/query")
+@router.get("/api/metrics/v1/{tenant}/api/v1/query")
 async def get_instant_query(tenant: str, query: str = Query(...)):
     """Mocks the /api/metrics/v1/{tenant}/api/v1/query endpoint"""
     return server.get_instant_query(tenant, query)
@@ -91,7 +94,18 @@ class ClusterResponses(BaseModel):
     mock_responses: Dict[str, ClusterResponse]
 
 
-@app.put("/rhobs_responses", status_code=204)
+@router.put("/rhobs_responses", status_code=204)
 async def change_rhobs_responses(responses: ClusterResponses):
     logger.info("Changing mocked responses for RHOBS endpoint")
     server.mock_responses = generate_mock_responses(jsonable_encoder(responses))
+
+
+# Include the same endpoints at the "root"
+# and with a prefix. This is useful for exposing
+# internal in the cluster and through and OpenShift route
+# managed by Clowder with minimal changes in the configs
+# See https://fastapi.tiangolo.com/tutorial/bigger-applications/#include-an-apirouter-in-another
+route_prefix = os.getenv("SERVER_ROUTE_PREFIX")
+if route_prefix is not None:
+    app.include_router(router, prefix=route_prefix)
+app.include_router(router, prefix="")
