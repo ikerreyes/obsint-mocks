@@ -47,21 +47,6 @@ objects:
               requests:
                 cpu: ${CPU_REQUEST}
                 memory: ${MEMORY_REQUEST}
-  - kind: Service
-    apiVersion: v1
-    metadata:
-      name: ccx-mock-ams
-      labels:
-        app: ccx-mock-ams
-    spec:
-      ports:
-        - name: web
-          port: 8000
-          protocol: TCP
-          targetPort: 8000
-      selector:
-        app: ccx-mock-ams
-      type: ClusterIP
 parameters:
 - description: Image name
   name: IMAGE
